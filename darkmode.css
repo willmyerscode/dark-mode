@@ -1,0 +1,47 @@
+/* =========
+  Dark Mode For Squarespace
+========== */
+
+.dark-mode-active {
+  --dark: black;
+  --darker: #5A5A5A;
+  --light: white;
+  --lighter: grey;
+}
+
+ .dark-mode-on .dark-button svg path{
+  fill: white;
+}
+
+.dark-button.floating {
+  height: 35px;
+  width: 35px;
+  position: fixed;
+  bottom: 2vw;
+  right: 2vw;
+  display: block;
+  z-index: 10;
+}
+
+.dark-button {
+    cursor: pointer;
+}
+
+.dark-mode-on [data-header-style="solid"] .header-nav-item a {
+  color: var(--light, white);
+}
+
+.dark-mode-on [data-header-style="solid"] {
+  background-color: var(--dark, black);
+}
+
+  #page:has(.system-page) {
+    flex: 1;
+    display:flex;
+    width:100%;
+    background: var(--siteBackgroundColor);
+  }
+  .system-page{
+    width: 100%;
+    align-items: start;
+  }
