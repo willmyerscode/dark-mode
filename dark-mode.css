@@ -2,15 +2,12 @@
   Dark Mode For Squarespace
 ========== */
 
-.dark-mode-active {
-  --dark: black;
-  --darker: #5A5A5A;
-  --light: white;
-  --lighter: grey;
+.dark-mode-on {
+   --active-button: white; 
 }
 
  .dark-mode-on .dark-button svg path{
-  fill: white;
+  fill: var(--active-button);
 }
 
 .dark-button.floating {
@@ -27,14 +24,6 @@
     cursor: pointer;
 }
 
-.dark-mode-on [data-header-style="solid"] .header-nav-item a {
-  color: var(--light, white);
-}
-
-.dark-mode-on [data-header-style="solid"] {
-  background-color: var(--dark, black);
-}
-
   #page:has(.system-page) {
     flex: 1;
     display:flex;
@@ -45,3 +34,4 @@
     width: 100%;
     align-items: start;
   }
+
