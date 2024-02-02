@@ -79,6 +79,11 @@ class DarkMode {
   
        // Set Dark Theme Attribute
       if (this.dataSetup.includes('custom')) {
+        this.menuOverlayTheme = this.header.getAttribute('data-menu-overlay-theme');
+        console.log(this.menuOverlayTheme);
+
+        this.mappedOverlayColor = this.themeMappings[this.menuOverlayTheme] || this.menuOverlayTheme;
+        
         this.sections.forEach((section, index) => {
             const defaultTheme = section.getAttribute('data-original-theme');
             const mappedTheme = this.themeMappings[defaultTheme] || defaultTheme;
@@ -86,6 +91,12 @@ class DarkMode {
             // Set the data attribute 'dark theme' for each section
             section.setAttribute('data-dark-theme', mappedTheme);    
         });
+      }
+
+        if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
+          // Map the original header color using themeMappings
+          this.mappedHeaderColor = this.themeMappings[this.originalHeaderColor] || this.originalHeaderColor;
+          
       }
     }
     
@@ -208,8 +219,8 @@ class DarkMode {
       }
   
       if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
-        this.header.classList.add(this.darkTheme);
-        this.mobileMenu.classList.add(this.darkTheme);
+        this.header.classList.add(this.mappedHeaderColor);
+        this.mobileMenu.classList.add(this.mappedOverlayColor);
       }
   
       if (this.dataSetup.includes('simple') && this.headerStyle.includes('dynamic')) {
@@ -221,7 +232,7 @@ class DarkMode {
         const firstSection = this.sections[0];
         const headerDarkTheme = firstSection.getAttribute('data-dark-theme');
         this.header.classList.add(headerDarkTheme);
-        this.mobileMenu.classList.add(headerDarkTheme);
+        this.mobileMenu.classList.add(this.mappedOverlayTheme);
       }
     }
     
@@ -272,4 +283,5 @@ class DarkMode {
     new DarkMode(instance);
   }
 }())
+
 
