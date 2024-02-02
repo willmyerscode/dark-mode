@@ -48,12 +48,11 @@ class DarkMode {
   
   init () {
     this.sectionSettings();
+    this.headerSettings();
     this.pageLoad();
     this.createButton();
     this.headerCheck();
   }
-
-
 
   sectionSettings() {
     if (!document.querySelector('.system-page')) {
@@ -67,23 +66,9 @@ class DarkMode {
         });
         section.setAttribute('data-original-theme', originalColor);
       });
-
-      // Original Header
-      this.colorThemes.forEach(color => {
-        if (this.header.classList.contains(color)) {
-          this.originalHeaderColor = color;
-          this.header.setAttribute('data-original-header-theme', this.originalHeaderColor);
-        }
-      });
-
   
        // Set Dark Theme Attribute
       if (this.dataSetup.includes('custom')) {
-        this.menuOverlayTheme = this.header.getAttribute('data-menu-overlay-theme');
-        console.log(this.menuOverlayTheme);
-
-        this.mappedOverlayColor = this.themeMappings[this.menuOverlayTheme] || this.menuOverlayTheme;
-        
         this.sections.forEach((section, index) => {
             const defaultTheme = section.getAttribute('data-original-theme');
             const mappedTheme = this.themeMappings[defaultTheme] || defaultTheme;
@@ -92,16 +77,41 @@ class DarkMode {
             section.setAttribute('data-dark-theme', mappedTheme);    
         });
       }
-
-        if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
-          // Map the original header color using themeMappings
-          this.mappedHeaderColor = this.themeMappings[this.originalHeaderColor] || this.originalHeaderColor;
-          
-      }
     }
     
   }
 
+  headerSettings(){
+      // Original Header
+      this.colorThemes.forEach(color => {
+        if (this.header.classList.contains(color)) {
+          this.originalHeaderColor = color;
+          this.header.setAttribute('data-original-header-theme', this.originalHeaderColor);
+        }
+      });
+
+      // Original Overlay menu
+      this.colorThemes.forEach(color => {
+        if (this.mobileMenu.classList.contains(color)) {
+          this.originalOverlayColor = color;
+          this.mobileMenu.setAttribute('data-original-overlay-theme', this.originalOverlayColor);
+        }
+      });
+
+  
+       // Set Dark Theme Attribute
+      if (this.dataSetup.includes('custom')) {
+        this.menuOverlayTheme = this.header.getAttribute('data-menu-overlay-theme');
+
+        this.mappedOverlayColor = this.themeMappings[this.menuOverlayTheme] || this.menuOverlayTheme;
+      }
+
+        if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
+          // Map the original header color using themeMappings
+          this.mappedHeaderColor = this.themeMappings[this.originalHeaderColor] || this.originalHeaderColor;
+      }
+    }
+  
   pageLoad(){
     this.sessionData = localStorage.getItem("darkMode");
     if (this.sessionData === "dark-mode-on") {
@@ -221,6 +231,7 @@ class DarkMode {
       if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
         this.header.classList.add(this.mappedHeaderColor);
         this.mobileMenu.classList.add(this.mappedOverlayColor);
+        
       }
   
       if (this.dataSetup.includes('simple') && this.headerStyle.includes('dynamic')) {
@@ -232,7 +243,8 @@ class DarkMode {
         const firstSection = this.sections[0];
         const headerDarkTheme = firstSection.getAttribute('data-dark-theme');
         this.header.classList.add(headerDarkTheme);
-        this.mobileMenu.classList.add(this.mappedOverlayTheme);
+        this.mobileMenu.classList.add(this.mappedOverlayColor);
+        
       }
     }
     
@@ -255,6 +267,7 @@ class DarkMode {
     if (!document.querySelector('.system-page')) {
       this.removeColorThemes();
       this.header.classList.add(this.originalHeaderColor);
+      this.mobileMenu.classList.add(this.originalOverlayColor);
       this.sections.forEach(section => {
         this.originalTheme = section.getAttribute('data-original-theme');
         section.classList.add(this.originalTheme);
