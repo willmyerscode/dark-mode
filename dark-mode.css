@@ -3,7 +3,8 @@
 ========== */
 
 .dark-mode-on {
-   --active-button: white; 
+ --active-button: white;
+  
 }
 
  .dark-mode-on .dark-button svg path{
