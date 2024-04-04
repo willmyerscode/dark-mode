@@ -59,11 +59,7 @@ class DarkMode {
       // Get Original Colors
       this.sections.forEach(section => {
         let originalColor = 'white';
-        this.colorThemes.forEach(color => {
-          if (section.classList.contains(color)) {
-            originalColor = color;
-          }
-        });
+         originalColor = section.getAttribute("data-section-theme");
         section.setAttribute('data-original-theme', originalColor);
       });
   
@@ -83,25 +79,18 @@ class DarkMode {
 
   headerSettings(){
       // Original Header
-      this.colorThemes.forEach(color => {
-        if (this.header.classList.contains(color)) {
-          this.originalHeaderColor = color;
+          this.originalHeaderColor = this.header.getAttribute("data-section-theme");
           this.header.setAttribute('data-original-header-theme', this.originalHeaderColor);
-        }
-      });
+        
 
       // Original Overlay menu
-      this.colorThemes.forEach(color => {
-        if (this.mobileMenu.classList.contains(color)) {
-          this.originalOverlayColor = color;
-          this.mobileMenu.setAttribute('data-original-overlay-theme', this.originalOverlayColor);
-        }
-      });
-
+      this.originalOverlayColor = this.mobileMenu.getAttribute("data-section-theme");
+      this.mobileMenu.setAttribute('data-original-overlay-theme', this.originalOverlayColor);
+        
   
        // Set Dark Theme Attribute
       if (this.dataSetup.includes('custom')) {
-        this.menuOverlayTheme = this.header.getAttribute('data-menu-overlay-theme');
+        this.menuOverlayTheme = this.header.getAttribute('data-section-theme');
 
         this.mappedOverlayColor = this.themeMappings[this.menuOverlayTheme] || this.menuOverlayTheme;
       }
@@ -178,72 +167,55 @@ class DarkMode {
     })
   }
 
-  removeColorThemes() {
-    this.sections.forEach(section => {
-      this.colorThemes.forEach(color => {
-        section.classList.remove(color);
-      });
-    });
-    
-    if (!document.querySelector('.system-page')) {
-      this.colorThemes.forEach(color => {
-        this.header.classList.remove(color);
-        this.mobileMenu.classList.remove(color);
-        
-      });
-    }
-  }
-
   turnDarkModeOn(){
     localStorage.setItem("darkMode", 'dark-mode-on');
     this.siteWrapper.classList.add('dark-mode-on');
     this.siteWrapper.classList.remove('dark-mode-off');
 
     if (document.querySelector('.system-page')) {
-      this.header.classList.add(this.darkTheme);
-      this.mobileMenu.classList.add(this.darkTheme);
+      this.header.setAttribute('data-section-theme', this.darkTheme);
+      this.mobileMenu.setAttribute('data-section-theme', this.darkTheme);
       this.sections.forEach(section => {
-        section.classList.add(this.darkTheme);
+        section.setAttribute('data-section-theme', this.darkTheme);
       });
     }
     
     if (!document.querySelector('.system-page')) {
-      this.removeColorThemes();
   
       if (this.dataSetup.includes('custom')) {
         this.sections.forEach(section => {
           this.darkTheme = section.getAttribute('data-dark-theme');
-          section.classList.add(this.darkTheme);
+          section.setAttribute('data-section-theme', this.darkTheme);
         });
       }
 
     if (this.dataSetup.includes('simple')) {
         this.sections.forEach(section => {
-          section.classList.add(this.darkTheme);
+          section.setAttribute('data-section-theme', this.darkTheme);
         });
       }
   
       if (this.dataSetup.includes('simple') && this.headerStyle.includes('theme')) {
-        this.header.classList.add(this.darkTheme);
-        this.mobileMenu.classList.add(this.darkTheme);
+        this.header.setAttribute('data-section-theme', this.darkTheme);
+        this.mobileMenu.setAttribute('data-section-theme', this.darkTheme);
       }
   
       if (this.dataSetup.includes('custom') && this.headerStyle.includes('theme')) {
-        this.header.classList.add(this.mappedHeaderColor);
-        this.mobileMenu.classList.add(this.mappedOverlayColor);
+        this.header.setAttribute('data-section-theme', this.mappedHeaderColor);
+        this.mobileMenu.setAttribute('data-section-theme', this.mappedOverlayColor);
         
       }
   
       if (this.dataSetup.includes('simple') && this.headerStyle.includes('dynamic')) {
-        this.header.classList.add(this.darkTheme);
-        this.mobileMenu.classList.add(this.darkTheme);
+        this.header.setAttribute('data-section-theme', this.darkTheme);
+        this.mobileMenu.setAttribute('data-section-theme', this.darkTheme);
       }
   
       if (this.dataSetup.includes('custom') && this.headerStyle.includes('dynamic')) {
         const firstSection = this.sections[0];
         const headerDarkTheme = firstSection.getAttribute('data-dark-theme');
-        this.header.classList.add(headerDarkTheme);
-        this.mobileMenu.classList.add(this.mappedOverlayColor);
+        this.header.setAttribute('data-section-theme', headerDarkTheme);
+        this.mobileMenu.setAttribute('data-section-theme', this.mappedOverlayColor);
         
       }
     }
@@ -256,21 +228,19 @@ class DarkMode {
     this.siteWrapper.classList.remove('dark-mode-on');
     this.siteWrapper.classList.add('dark-mode-off');
 
+       this.header.setAttribute('data-section-theme', this.originalHeaderColor);
+        this.mobileMenu.setAttribute('data-section-theme', this.menuOverlayTheme);
+
     if (document.querySelector('.system-page')) {
-      this.header.classList.remove(this.darkTheme);
-      this.mobileMenu.classList.remove(this.darkTheme);
       this.sections.forEach(section => {
-        section.classList.remove(this.darkTheme);
+        section.setAttribute('data-section-theme', this.originalColor);
       });
     }
     
     if (!document.querySelector('.system-page')) {
-      this.removeColorThemes();
-      this.header.classList.add(this.originalHeaderColor);
-      this.mobileMenu.classList.add(this.originalOverlayColor);
       this.sections.forEach(section => {
         this.originalTheme = section.getAttribute('data-original-theme');
-        section.classList.add(this.originalTheme);
+         section.setAttribute('data-section-theme', this.originalTheme);
       });
     }
   }
@@ -296,5 +266,6 @@ class DarkMode {
     new DarkMode(instance);
   }
 }())
+
 
 
